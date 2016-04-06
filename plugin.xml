@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://maycur.com/mobile/plugins/1.0"
+        id="maycur-plugin-picker" version="0.1.0">
+    <name>Picker</name>
+    <description>Maycur Picker Plugin</description>
+    <license>Maycur</license>
+    <keywords>maycur,picker</keywords>
+
+    <js-module src="www/Picker.js" name="Picker">
+            <clobbers target="maycur.picker" />
+        </js-module>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Picker">
+                <param name="ios-package" value="MCPicker"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/MCPicker.h" />
+        <source-file src="src/ios/MCPicker.m" />
+    </platform>
+
+   <!--  <platform name="android">
+        <config-file target="config.xml" parent="/*">
+            <feature name="ImageViewer">
+                <param name="android-package" value="com.maycur.plugin.ImageViewer"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.maycur.plugin.ImageViewerActivity" android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        </config-file>
+        <framework src="com.android.support:appcompat-v7:21+" />
+
+        <source-file src="src/android/ImageViewer.java" target-dir="src/com/maycur/plugin" />
+        <source-file src="src/android/ImageViewerActivity.java" target-dir="src/com/maycur/plugin" />
+        <source-file src="src/android/ImagePageFragment.java" target-dir="src/com/maycur/plugin" />
+        <source-file src="src/android/activity_image_viewer.xml" target-dir="res/layout" />
+        <source-file src="src/android/fragment_image_page.xml" target-dir="res/layout" />
+    </platform> -->
+</plugin>
