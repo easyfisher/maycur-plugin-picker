@@ -8,7 +8,7 @@
 
     <js-module src="www/Picker.js" name="Picker">
             <clobbers target="maycur.picker" />
-        </js-module>
+    </js-module>
 
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
@@ -19,6 +19,8 @@
 
         <header-file src="src/ios/MCPicker.h" />
         <source-file src="src/ios/MCPicker.m" />
+        <header-file src="src/ios/MCPickerView.h" />
+        <source-file src="src/ios/MCPickerView.m" />
     </platform>
 
    <!--  <platform name="android">
