@@ -2,13 +2,13 @@ package com.maycur.plugin;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TableLayout;
@@ -71,7 +71,9 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
             setDefaultData();
         }
 
-        view.findViewById(getIdentifier("btn_ok", "id")).setOnClickListener(new View.OnClickListener() {
+
+        Button btnOK = (Button) view.findViewById(getIdentifier("btn_ok", "id"));
+        btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
@@ -87,21 +89,24 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
                 dismiss();
             }
         });
+        String okText = getContext().getResources().getString(getIdentifier("button_ok", "string"));
+        if (okText != null && !okText.trim().isEmpty()) {
+            btnOK.setText(okText);
+        }
 
-        view.findViewById(getIdentifier("btn_cancel", "id")).setOnClickListener(new View.OnClickListener() {
+        Button btnCancel = (Button) view.findViewById(getIdentifier("btn_cancel", "id"));
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
+        String cancelText = getContext().getResources().getString(getIdentifier("button_cancel", "string"));
+        if (cancelText != null && !cancelText.trim().isEmpty()) {
+            btnCancel.setText(cancelText);
+        }
 
         setView(view);
-        setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-
-            }
-        });
     }
 
     private void setDefaultData() {
