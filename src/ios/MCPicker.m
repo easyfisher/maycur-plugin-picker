@@ -154,8 +154,14 @@
 }
 
 #pragma mark - UIPickerViewDelegate
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return self.nodesMap[component][row].name;
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = self.nodesMap[component][row].name;
+    label.adjustsFontSizeToFitWidth = YES;
+    label.font = [UIFont systemFontOfSize:22];
+    label.minimumScaleFactor = 0.7;
+    
+    return label;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {

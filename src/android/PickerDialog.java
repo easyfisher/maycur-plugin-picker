@@ -115,11 +115,9 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
         setData(0, columnNodes);
 
         for (int i = 1; i < mPickers.length; i++) {
-            columnNodes = columnNodes[0].childs;
-            if (columnNodes == null || columnNodes.length <= 0) {
-                break;
+            if (columnNodes != null && columnNodes.length > 0) {
+                columnNodes = columnNodes[0].childs;
             }
-
             setData(i, columnNodes);
         }
     }
