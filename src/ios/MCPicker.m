@@ -103,6 +103,20 @@
                 currentNodes = [NSArray array];
             }
         }
+    } else {
+        NSArray<PickerNode *> *currentNodes = self.nodes;
+        for (int i = 0; i < self.depth; i++) {
+            self.nodesMap[i] = currentNodes;
+            if (currentNodes && currentNodes.count > 0) {
+                currentNodes = currentNodes[0].childs;
+            } else {
+                currentNodes = [NSArray array];
+            }
+            
+            if (!currentNodes) {
+                currentNodes = [NSArray array];
+            }
+        }
     }
     
     [self setupView];
