@@ -59,6 +59,7 @@
 @property (nonatomic, strong) NSArray<PickerNode *> *nodes;
 @property (nonatomic, assign) NSInteger depth;
 @property (nonatomic, strong) NSMutableArray<NSArray<PickerNode *> *> *nodesMap;
+@property (nonatomic, strong) NSArray *defaultIndexes;
 
 @end
 
@@ -68,6 +69,10 @@
     NSArray *array = command.arguments[0];
     if (array.count <= 0) {
         return;
+    }
+    
+    if (command.arguments.count >= 2) {
+        self.defaultIndexes = command.arguments[1];
     }
     
     self.command = command;
@@ -83,6 +88,22 @@
         }
     }
     self.nodesMap = [NSMutableArray arrayWithCapacity:self.depth];
+    
+    if (self.defaultIndexes) {
+        NSArray<PickerNode *> *currentNodes = self.nodes;
+        for (int i = 0; i < self.depth; i++) {
+            self.nodesMap[i] = currentNodes;
+            if (currentNodes && currentNodes.count > 0 && i < self.defaultIndexes.count) {
+                currentNodes = currentNodes[[(NSNumber *)self.defaultIndexes[i] intValue]].childs;
+            } else {
+                currentNodes = [NSArray array];
+            }
+            
+            if (!currentNodes) {
+                currentNodes = [NSArray array];
+            }
+        }
+    }
     
     [self setupView];
 }
@@ -108,6 +129,13 @@
         self.backgroundView.alpha = 0.5;
         self.pickerView.frame = CGRectMake(0, height - 280, width, 280);
     }];
+    
+    if (self.defaultIndexes) {
+        for (int i = 0; i < self.defaultIndexes.count; i++) {
+            int index = [(NSNumber *)self.defaultIndexes[i] intValue];
+            [self.pickerView.picker selectRow:index inComponent:i animated:NO];
+        }
+    }
 }
 
 - (void)backgroundDidTap {
@@ -142,15 +170,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    NSArray<PickerNode *> *nodes = self.nodes;
-    for (int i = 0; i < component; i++) {
-        nodes = nodes[[self.pickerView.picker selectedRowInComponent:i]].childs;
-    }
-    if (!nodes) {
-        nodes = [NSArray array];
-    }
-    self.nodesMap[component] = nodes;
-    return nodes.count;
+    return self.nodesMap[component].count;
 }
 
 #pragma mark - UIPickerViewDelegate
@@ -166,7 +186,15 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (component < self.depth - 1) {
+        NSArray<PickerNode *> *currentNodes = self.nodesMap[component][row].childs;
         for (NSInteger i = component + 1; i < self.depth; i++) {
+            if (currentNodes && currentNodes.count > 0) {
+                self.nodesMap[i] = currentNodes;
+                currentNodes = currentNodes[0].childs;
+            } else {
+                self.nodesMap[i] = [NSArray array];
+            }
+            
             [self.pickerView.picker reloadComponent:i];
             [self.pickerView.picker selectRow:0 inComponent:i animated:YES];
         }

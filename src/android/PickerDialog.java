@@ -24,6 +24,7 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
     private NumberPicker[] mPickers;
     private PickerNode[] mNodes;
     private SparseArray<PickerNode[]> mNodesMap;
+    private int[] mDefaultIndexes = null;
 
     private OnPickListener mListener;
 
@@ -35,7 +36,7 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
         mListener = listener;
     }
 
-    public PickerDialog(Context context, PickerNode[] nodes) {
+    public PickerDialog(Context context, PickerNode[] nodes, int[] defaultIndexes) {
         super(context);
 
         final Context themeContext = getContext();
@@ -49,6 +50,15 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
             for (PickerNode node : nodes) {
                 if (maxDepth < node.depth)
                     maxDepth = node.depth;
+            }
+
+            mDefaultIndexes = new int[maxDepth];
+            if (defaultIndexes != null) {
+                for (int i = 0 ; i < mDefaultIndexes.length; i++) {
+                    if (i < defaultIndexes.length) {
+                        mDefaultIndexes[i] = defaultIndexes[i];
+                    }
+                }
             }
 
             mPickers = new NumberPicker[maxDepth];
@@ -113,12 +123,14 @@ public class PickerDialog extends AlertDialog implements NumberPicker.OnValueCha
         mNodesMap = new SparseArray<PickerNode[]>();
         PickerNode[] columnNodes = mNodes;
         setData(0, columnNodes);
+        mPickers[0].setValue(mDefaultIndexes[0]);
 
         for (int i = 1; i < mPickers.length; i++) {
             if (columnNodes != null && columnNodes.length > 0) {
-                columnNodes = columnNodes[0].childs;
+                columnNodes = columnNodes[mDefaultIndexes[i - 1]].childs;
             }
             setData(i, columnNodes);
+            mPickers[i].setValue(mDefaultIndexes[i]);
         }
     }
 

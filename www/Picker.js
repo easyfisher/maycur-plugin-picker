@@ -11,12 +11,16 @@ var Picker = function() {
 
 }
 
-Picker.show = function(addresses, callback) {
+Picker.show = function(nodes, defaultIndexes, callback) {
+	var params = [nodes];
+	if (defaultIndexes && defaultIndexes.length > 0) {
+		params.push(defaultIndexes);
+	}
     exec(callback,
-      null,
-      "Picker",
-      "show",
-      [addresses]
+       null,
+       "Picker",
+       "show",
+       params
     );
 };
 
