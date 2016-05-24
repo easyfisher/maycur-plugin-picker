@@ -200,6 +200,9 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (component < self.depth - 1) {
+        if (row >= self.nodesMap[component].count)
+            return;
+        
         NSArray<PickerNode *> *currentNodes = self.nodesMap[component][row].childs;
         for (NSInteger i = component + 1; i < self.depth; i++) {
             if (currentNodes && currentNodes.count > 0) {
