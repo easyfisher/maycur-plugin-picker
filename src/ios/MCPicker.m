@@ -194,6 +194,7 @@
     label.adjustsFontSizeToFitWidth = YES;
     label.font = [UIFont systemFontOfSize:22];
     label.minimumScaleFactor = 0.7;
+    label.textAlignment = NSTextAlignmentCenter;
     
     return label;
 }
